@@ -41,6 +41,13 @@ export class VideoManager {
     await FFmpegKit.execute(command);
     return outputPath;
   }
+  static async compressVideo(path, width, height) {
+    const newPath = this.formatPath(path);
+    const outputPath = `${newPath}_compress.mp4`;
+    const command = `-y -i ${path} -vf scale=${width}:${height} ${outputPath}`;
+    await FFmpegKit.execute(command);
+    return outputPath;
+  }
   static async createFrames(path, fps = 1) {
     const newPath = this.formatPath(path);
     const command = `-i ${path} -vf fps=${fps} ${newPath}_thumb_%01d.jpg`;
