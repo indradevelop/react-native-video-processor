@@ -41,10 +41,10 @@ export class VideoManager {
     await FFmpegKit.execute(command);
     return outputPath;
   }
-  static async compressVideo(path, width, height) {
+  static async compressVideo(path, height) {
     const newPath = this.formatPath(path);
     const outputPath = `${newPath}_compress.mp4`;
-    const command = `-y -i ${path} -vf scale=${width}:${height} ${outputPath}`;
+    const command = `-y -i ${path} -vf "scale=-2:'min(${height},ih)'" -preset ultrafast -pix_fmt yuv420p ${outputPath}`;
     await FFmpegKit.execute(command);
     return outputPath;
   }
