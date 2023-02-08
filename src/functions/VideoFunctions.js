@@ -50,7 +50,7 @@ export class VideoManager {
   }
   static async createFrames(path, fps = 1) {
     const newPath = this.formatPath(path);
-    const command = `-i ${path} -vf fps=${fps} ${newPath}_thumb_%01d.jpg`;
+    const command = `-y -i ${path} -vf fps=${fps} -preset ultrafast ${newPath}_thumb_%01d.jpg`;
     await FFmpegKit.execute(command);
     return `${newPath}_thumb_`;
   }

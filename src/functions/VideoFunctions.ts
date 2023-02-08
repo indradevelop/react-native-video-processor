@@ -50,7 +50,7 @@ export class VideoManager {
     await FFmpegKit.execute(command);
     return outputPath;
   }
-  
+
   static async compressVideo(
     path: string,
     height: string
@@ -64,7 +64,7 @@ export class VideoManager {
 
   static async createFrames(path: string, fps: number = 1): Promise<string> {
     const newPath = this.formatPath(path);
-    const command = `-i ${path} -vf fps=${fps} ${newPath}_thumb_%01d.jpg`;
+    const command = `-y -i ${path} -vf fps=${fps} -preset ultrafast ${newPath}_thumb_%01d.jpg`;
     await FFmpegKit.execute(command);
     return `${newPath}_thumb_`;
   }
