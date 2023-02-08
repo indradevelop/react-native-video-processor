@@ -46,18 +46,26 @@ export class VideoManager {
   ): Promise<string> {
     const newPath = this.formatPath(path);
     const outputPath = `${newPath}_trim.mp4`;
-    const command = `-y -i ${path} -ss ${startTime} -t ${duration}  -c:v libx264 -preset ultrafast -pix_fmt yuv420p ${outputPath}`;
+
+    let encoder = 'libx264';
+    if (startTime == '0') {
+      encoder = 'copy';
+    }
+
+    let audioEncoder = 'aac';
+    if (startTime == '0') {
+      encoder = 'copy';
+    }
+
+    const command = `-y -i ${path} -ss ${startTime} -t ${duration} -c:v ${encoder} -c:a ${audioEncoder} -preset ultrafast -pix_fmt yuv420p ${outputPath}`;
     await FFmpegKit.execute(command);
     return outputPath;
   }
 
-  static async compressVideo(
-    path: string,
-    height: string
-  ): Promise<string> {
+  static async compressVideo(path: string, height: string): Promise<string> {
     const newPath = this.formatPath(path);
     const outputPath = `${newPath}_compress.mp4`;
-    const command = `-y -i ${path} -vf "scale=-2:'min(${height},ih)'" -c:v libx264 -preset ultrafast -pix_fmt yuv420p ${outputPath}`;
+    const command = `-y -i ${path} -vf "scale=-2:'min(${height},ih)'" -c:v libx264 -c:a copy -preset ultrafast -pix_fmt yuv420p ${outputPath}`;
     await FFmpegKit.execute(command);
     return outputPath;
   }
