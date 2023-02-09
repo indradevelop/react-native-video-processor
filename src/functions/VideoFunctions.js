@@ -56,13 +56,13 @@ export class VideoManager {
   static async compressVideo(path, height) {
     const newPath = this.formatPath(path);
     const outputPath = `${newPath}_compress.mp4`;
-    const command = `-y -i "${path}" -vf "scale=-2:'min(${height},ih)'" -c:v libx264 -c:a copy -preset ultrafast -pix_fmt yuv420p "${outputPath}"`;
+    const command = `-y -i "${path}" -vf "scale=-2:'min(${height},ih)'" -c:v libx264 -crf 30 -c:a aac -b:a 128k -preset ultrafast -pix_fmt yuv420p "${outputPath}"`;
     await FFmpegKit.execute(command);
     return outputPath;
   }
   static async createFrames(path, fps = 1) {
     const newPath = this.formatPath(path);
-    const command = `-y -i "${path}" -vf fps=${fps} -preset ultrafast "${newPath}_thumb_%01d.jpg"`;
+    const command = `-y -i "${path}" -vf fps=${fps} -c:v libx264 -preset ultrafast "${newPath}_thumb_%01d.jpg"`;
     await FFmpegKit.execute(command);
     return `${newPath}_thumb_`;
   }
