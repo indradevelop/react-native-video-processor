@@ -72,7 +72,14 @@ export class VideoManager {
 
   static async createFrames(path: string, fps: number = 1): Promise<string> {
     const newPath = this.formatPath(path);
-    const command = `-y -i "${path}" -vf fps=${fps} -c:v libx264 -preset ultrafast "${newPath}_thumb_%01d.jpg"`;
+    const command = `-y -i "${path}" -vf fps=${fps} -preset ultrafast "${newPath}_thumb_%01d.jpg"`;
+    await FFmpegKit.execute(command);
+    return `${newPath}_thumb_`;
+  }
+
+  static async getFrames(path: string, total: number = 5): Promise<string> {
+    const newPath = this.formatPath(path);
+    const command = `-y -i "${path}" -vf "select=not(mod(n,${total}))" -vsync vfr "${newPath}_thumb_%01d.jpg"`;
     await FFmpegKit.execute(command);
     return `${newPath}_thumb_`;
   }
