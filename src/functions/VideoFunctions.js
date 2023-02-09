@@ -66,12 +66,6 @@ export class VideoManager {
     await FFmpegKit.execute(command);
     return `${newPath}_thumb_`;
   }
-  static async getFrames(path, total = 5) {
-    const newPath = this.formatPath(path);
-    const command = `-y -i "${path}" -vf "select=not(mod(n,${total}))" -vsync vfr "${newPath}_thumb_%01d.jpg"`;
-    await FFmpegKit.execute(command);
-    return `${newPath}_thumb_`;
-  }
   static async reverseVideo(path) {
     const newPath = this.formatPath(path);
     const outputPath = `${newPath}_reverse.mp4`;
