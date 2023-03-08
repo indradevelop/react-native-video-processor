@@ -56,7 +56,7 @@ export class VideoManager {
   static async compressVideo(path, height) {
     const newPath = this.formatPath(path);
     const outputPath = `${newPath}_compress.mp4`;
-    const command = `-y -i "${path}" -vf "scale=-2:'min(${height},ih)'" -c:v libx264 -crf 30 -c:a aac -b:a 128k -movflags +faststart -preset ultrafast -pix_fmt yuv420p "${outputPath}"`;
+    const command = `-y -i "${path}" -vf "scale=-2:'min(${height},ih)'" -c:v libx264 -crf 23 -c:a aac -b:a 128k -movflags +faststart -preset fast -pix_fmt yuv420p "${outputPath}"`;
     await FFmpegKit.execute(command);
     return outputPath;
   }
