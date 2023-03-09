@@ -62,10 +62,15 @@ export class VideoManager {
     return outputPath;
   }
 
-  static async compressVideo(path: string, height: string): Promise<string> {
+  static async compressVideo(
+    path: string,
+    height: string,
+    crf: string,
+    preset: string
+  ): Promise<string> {
     const newPath = this.formatPath(path);
     const outputPath = `${newPath}_compress.mp4`;
-    const command = `-y -i "${path}" -vf "scale=-2:'min(${height},ih)'" -c:v libx264 -crf 28 -c:a aac -b:a 128k -movflags +faststart -preset veryfast -pix_fmt yuv420p "${outputPath}"`;
+    const command = `-y -i "${path}" -vf "scale=-2:'min(${height},ih)'" -c:v libx264 -crf ${crf} -c:a aac -b:a 128k -movflags +faststart -preset ${preset} -pix_fmt yuv420p "${outputPath}"`;
     await FFmpegKit.execute(command);
     return outputPath;
   }
