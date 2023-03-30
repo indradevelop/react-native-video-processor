@@ -4,7 +4,7 @@ import type { VideoInfoType } from 'src/types/VideoInfoType';
 
 export class VideoManager {
   static async getVideoInfo(path: string): Promise<VideoInfoType> {
-    const command = `-i ${path} -v quiet -print_format json -show_format -show_streams`;
+    const command = `-i "${path}" -v quiet -print_format json -show_format -show_streams`;
     const response = await FFprobeKit.execute(command);
     const output = await JSON.parse(await response.getOutput());
     const streamIndex = output.streams[1] ? 1 : 0;

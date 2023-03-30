@@ -2,7 +2,7 @@ import { FFmpegKit, FFprobeKit } from 'ffmpeg-kit-react-native';
 import { Platform } from 'react-native';
 export class VideoManager {
   static async getVideoInfo(path) {
-    const command = `-i ${path} -v quiet -print_format json -show_format -show_streams`;
+    const command = `-i "${path}" -v quiet -print_format json -show_format -show_streams`;
     const response = await FFprobeKit.execute(command);
     const output = await JSON.parse(await response.getOutput());
     const streamIndex = output.streams[1] ? 1 : 0;
